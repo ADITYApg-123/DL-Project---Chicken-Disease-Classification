@@ -84,6 +84,40 @@ A. `__init__.py` is a file that tells Python — *"treat this folder as a packag
 
 ---
 
+**Q. Why do we add `-e .` at the end of `requirements.txt`?**
+
+A. The `-e .` stands for **editable install**. It tells `pip` to install the local project (where `setup.py` exists) as a package in the current environment. 
+
+- Instead of copying files to the `site-packages` directory, it creates a **symlink** to your project folder.
+- This allows you to import your own local modules (e.g. `from cnnClassifier.config import ...`) from anywhere in the project, just like you would import an external library like `pandas` or `numpy`.
+- Without `-e .`, you might get `ModuleNotFoundError` when trying to import from your own `src/cnnClassifier` folder.
+
+---
+
+**Q. Why do we create a Virtual Environment (`venv`) instead of installing globally?**
+
+A. Virtual environments isolate your project's dependencies from your system's global Python and other projects. This ensures that:
+- You don't get version conflicts between different projects (e.g. Project A needs standard Pandas, Project B needs older Pandas).
+- It's easier to export an exact `requirements.txt` of only what *this* project uses.
+- Your project is 100% reproducible on someone else's machine.
+
+---
+
+**Q. What is the difference between `setup.py` and `requirements.txt`?**
+
+A. 
+- **`requirements.txt`** lists *external* packages you need to download and install from PyPI (like pandas, tensorflow). It ensures the environment has the correct dependencies.
+- **`setup.py`** is what packages *your own* project code. It makes your local directory (like `src/cnnClassifier`) installable. 
+> *Interviewer Tip:* When we do `pip install -e .` (editable install), pip reads the `setup.py` file to know how to install your local code!
+
+---
+
+**Q. What is `setuptools.find_packages()` and why use it?**
+
+A. In `setup.py`, `find_packages()` automatically scans your directory to find any folders containing an `__init__.py` file (like `components`, `config`, `utils`) and packages them. Without it, you would have to manually list out every single folder in your project whenever you add a new one.
+
+---
+
 ## 📦 Data Ingestion
 
 
