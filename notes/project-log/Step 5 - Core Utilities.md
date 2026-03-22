@@ -13,6 +13,9 @@ Every single function uses two major safeguards:
 1. **`@ensure_annotations`**: A decorator that enforces strict data typing (e.g., throwing an error if a function expects a `Path` variable but receives an `int`).
 2. **`cnnClassifier.logger`**: Every action logs its success straight to our global `running_logs.log` file so we can trace what happens when we run the pipeline.
 
+### 🧪 Experimentation in `research/trials.ipynb`
+Before writing these utilities permanently into `common.py`, we explicitly tested the difference between standard dictionaries and `ConfigBox`, as well as standard Python functions versus `@ensure_annotations` inside the Jupyter Notebook `research/trials.ipynb`. This notebook safely served as our sandbox to prove exactly why these MLOps utilities prevent silent bugs.
+
 ---
 
 ## 🛠️ The 9 Functions I Built

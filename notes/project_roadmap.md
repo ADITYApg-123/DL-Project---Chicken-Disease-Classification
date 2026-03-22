@@ -11,12 +11,12 @@ This checklist tracks our end-to-end progress across the entire project lifecycl
 - [x] Create and verify `requirements.txt`
 - [x] Write `setup.py`
 
-## 3. Data Ingestion ⬜
-- [ ] Define data ingestion configuration
-- [ ] Write data downloading logic
-- [ ] Write data extraction logic
-- [ ] Update entity, configuration manager, and pipeline for ingestion
-- [ ] Test the data ingestion component
+## 3. Data Ingestion ✅
+- [x] Define data ingestion configuration
+- [x] Write data downloading logic
+- [x] Write data extraction logic
+- [x] Update entity, configuration manager, and pipeline for ingestion
+- [x] Test the data ingestion component
 
 ## 4. Default Model Architecture Preparation ⬜
 - [ ] Download/load VGG16 (or custom CNN) base model

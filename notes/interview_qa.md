@@ -139,6 +139,27 @@ A. Python is dynamically typed. Even if you define a function expecting a path s
 
 ---
 
+**Q. When initializing a GitHub repository with an empty `.github/workflows/main.yml` file, why does GitHub mark every commit with a red "Failure" X?**
+
+A. GitHub Actions automatically scans the `.github/workflows/` directory on every push. It expects every YAML file inside to have at least two mandatory components:
+1. `on:` (the trigger, e.g., on push to main)
+2. `jobs:` (the code that tells a server what to run)
+If the file is 100% empty, the GitHub parser immediately crashes trying to parse the empty required schema, failing the entire CI/CD pipeline. Adding a minimal "dummy" echo script satisfies the parser until real deployment code is written later.
+
+---
+
+**Q. Why does passing an empty `.yaml` file into `ConfigBox` completely crash the pipeline?**
+
+A. When `yaml.safe_load()` attempts to read a completely blank file (0 bytes), it does not return an empty dictionary (`{}`). Instead, it returns Python's `None` primitive. When that `None` object is passed into `ConfigBox(None)`, the library throws a fatal `BoxValueError` because it demands a dictionary layout to create object dot-notation mappings. It is fixed by adding a dummy `key: value` pair so the YAML reads accurately as a dictionary block.
+
+---
+
+**Q. What causes `NameError: name 'XYZ' is not defined` inside a Jupyter Notebook when the class is clearly written earlier in the file?**
+
+A. Jupyter Notebooks execute sequentially mapped to memory cell-by-cell. Even if the code is physically visible in the document above, if you forget to actually click "Run" (`Shift + Enter`) on the cell that defines the class/function, its variables are never injected into the active Python environment namespace. When a lower cell is run that calls it, Python throws a `NameError` because the reference doesn't exist in memory yet.
+
+---
+
 ## 📦 Data Ingestion
 
 

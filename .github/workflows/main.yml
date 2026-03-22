@@ -1,0 +1,19 @@
+name: MLOps Pipeline CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Placeholder Step
+        run: echo "CI pipeline initialized. Real deployment workflow will be added in Step 9!"

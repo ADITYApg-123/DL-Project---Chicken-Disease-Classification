@@ -42,6 +42,12 @@ We built 9 highly-reusable utility helper functions inside `src/cnnClassifier/ut
 - **`@ensure_annotations` enforcement**: prevents hidden data type crashes across the MLOps pipeline.
 - Base64 encoding/decoding specifically built for our final Flask Web App architecture.
 
+### ✅ Step 4: Data Ingestion Pipeline
+We constructed the automated data ingestion system:
+- Populated `config.yaml` with the external AWS/GitHub dataset URLs.
+- Created `ConfigurationManager` to automatically parse YAML files into Python structures using our custom utilities.
+- Built the `DataIngestion` class to programmatically download and extract complex dataset `.zip` structures directly into our isolated `artifacts/` database module.
+
 ---
 
 ## 🛠️ How to Run the Project (Current State)
