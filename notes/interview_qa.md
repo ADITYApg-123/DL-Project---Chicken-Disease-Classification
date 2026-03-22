@@ -116,6 +116,27 @@ A.
 
 A. In `setup.py`, `find_packages()` automatically scans your directory to find any folders containing an `__init__.py` file (like `components`, `config`, `utils`) and packages them. Without it, you would have to manually list out every single folder in your project whenever you add a new one.
 
+**Q. Why do we initialize our custom `logger` inside `src/cnnClassifier/__init__.py`?**
+
+A. The `__init__.py` file acts as the constructor / initializer for a Python package. 
+- Any code inside it runs the exact moment the package is imported anywhere in the project.
+- By placing our global `logger` setup there, we guarantee that the `logs/` directory is created and the logging configuration is defined **before** any other part of the project tries to use it.
+- This allows us to simply do `from cnnClassifier import logger` cleanly in any file (like `main.py`).
+
+---
+
+**Q. Why do we wrap our read YAML/JSON files inside a `ConfigBox` in `common.py`?**
+
+A. Normally, when you read a YAML or JSON file in Python, it returns a standard dictionary (`d = {"key": "value"}`). You are forced to access elements using brackets: `d["key"]`. If you try `d.key`, Python throws a nasty `AttributeError`.
+By passing the dictionary into a `ConfigBox(d)`, we can access our variables cleanly using dot notation (`d.key`). It makes accessing config parameters throughout the entire pipeline extremely elegant and robust!
+
+---
+
+**Q. Why do we use `@ensure_annotations` decorators on our utility functions?**
+
+A. Python is dynamically typed. Even if you define a function expecting a path string `def read_file(path: str)`, Python will happily let you pass an integer `read_file(5)` into it, causing a crash deep inside the logic. 
+`@ensure_annotations` enforces strict type checking. It guarantees that if the function receives the wrong data type, it throws a precise `EnsureError` immediately, preventing silent bugs from propagating through models.
+
 ---
 
 ## 📦 Data Ingestion

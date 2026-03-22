@@ -6,6 +6,20 @@ This repository contains the complete pipeline: from data ingestion to model tra
 
 ---
 
+## 🔄 MLOps Pipeline Workflow
+For every single stage of this project (Data Ingestion, Transformation, Training, Evaluation), we strictly follow this 9-step workflow:
+1. Update `config.yaml`
+2. Update `secrets.yaml` [Optional]
+3. Update `params.yaml`
+4. Update the entity
+5. Update the configuration manager in `src/config`
+6. Update the components
+7. Update the pipeline
+8. Update `main.py`
+9. Update `dvc.yaml`
+
+---
+
 ## 🚀 Progress So Far
 
 We are currently building this project step-by-step. Here is what has been implemented so far:
@@ -20,6 +34,13 @@ Instead of manually creating dozens of folders and files for the pipeline, we wr
 We defined all critical Deep Learning and utility dependencies (TensorFlow, Pandas, Matplotlib, DVC, etc.) in `requirements.txt`.
 - We wrote `setup.py` and utilized `setuptools.find_packages()` to make the local `src/cnnClassifier` directory installable as a Python package.
 - We used `-e .` (editable install) to link the project locally, allowing us to import our own modules cleanly (e.g. `from cnnClassifier.components import X`).
+
+### ✅ Step 3: Core Utility Scripts (`common.py`)
+We built 9 highly-reusable utility helper functions inside `src/cnnClassifier/utils/common.py` that power the entire pipeline:
+- **`read_yaml`, `load_json`, `save_json`, `save_bin`, `load_bin`**: robust file I/O operations wrapped with custom logging.
+- **`ConfigBox` implementation**: ensures our yaml dictionaries can be natively accessed via dot notation (`config.filepath` instead of `config['filepath']`).
+- **`@ensure_annotations` enforcement**: prevents hidden data type crashes across the MLOps pipeline.
+- Base64 encoding/decoding specifically built for our final Flask Web App architecture.
 
 ---
 
