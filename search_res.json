@@ -1,0 +1,190 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "url": "https://api.github.com/repos/microsoft/pyright/issues/1914",
+      "repository_url": "https://api.github.com/repos/microsoft/pyright",
+      "labels_url": "https://api.github.com/repos/microsoft/pyright/issues/1914/labels{/name}",
+      "comments_url": "https://api.github.com/repos/microsoft/pyright/issues/1914/comments",
+      "events_url": "https://api.github.com/repos/microsoft/pyright/issues/1914/events",
+      "html_url": "https://github.com/microsoft/pyright/issues/1914",
+      "id": 903875346,
+      "node_id": "MDU6SXNzdWU5MDM4NzUzNDY=",
+      "number": 1914,
+      "title": "`Error: Debug Failure. False expression` for mypy/config_parser.py:107:46",
+      "user": {
+        "login": "Strum355",
+        "id": 18282288,
+        "node_id": "MDQ6VXNlcjE4MjgyMjg4",
+        "avatar_url": "https://avatars.githubusercontent.com/u/18282288?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Strum355",
+        "html_url": "https://github.com/Strum355",
+        "followers_url": "https://api.github.com/users/Strum355/followers",
+        "following_url": "https://api.github.com/users/Strum355/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Strum355/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Strum355/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Strum355/subscriptions",
+        "organizations_url": "https://api.github.com/users/Strum355/orgs",
+        "repos_url": "https://api.github.com/users/Strum355/repos",
+        "events_url": "https://api.github.com/users/Strum355/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Strum355/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 1268932462,
+          "node_id": "MDU6TGFiZWwxMjY4OTMyNDYy",
+          "url": "https://api.github.com/repos/microsoft/pyright/labels/bug",
+          "name": "bug",
+          "color": "d73a4a",
+          "default": true,
+          "description": "Something isn't working"
+        },
+        {
+          "id": 1338600884,
+          "node_id": "MDU6TGFiZWwxMzM4NjAwODg0",
+          "url": "https://api.github.com/repos/microsoft/pyright/labels/addressed%20in%20next%20version",
+          "name": "addressed in next version",
+          "color": "bfd4f2",
+          "default": false,
+          "description": "Issue is fixed and will appear in next published version"
+        }
+      ],
+      "state": "closed",
+      "locked": false,
+      "assignees": [
+
+      ],
+      "milestone": null,
+      "comments": 11,
+      "created_at": "2021-05-27T14:51:30Z",
+      "updated_at": "2021-05-31T00:01:31Z",
+      "closed_at": "2021-05-30T18:07:01Z",
+      "assignee": null,
+      "author_association": "NONE",
+      "type": null,
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "**Describe the bug**\r\nIn a fork of pyright (to make use of internal APIs), I use `Program.indexWorkspace` method to index an entire workspace in a batch-esque style https://github.com/Strum355/pyright/blob/a1c9990dbdbdd10aae482fcbc26e124a558fd032/packages/lsif-pyright/src/indexer.ts#L27. This causes the exception in the title to be thrown. Stacktrace can be found below.\r\n\r\nWhile I understand pyright does not have a public API yet for a reason, we are evaluating pyright as a backend for semantic indexing of Python projects, and there may be a few roadbumps along the way we hope to get some assistance with :slightly_smiling_face: \r\n\r\n**To Reproduce**\r\n1. Clone mypy repo\r\n2. Clone fork of pyright\r\n3. Point hard-coded path to clone of mypy\r\n4. In packages/lsif-pyright, invoke `npm run webpack && node dist/lsif-pyright.js`\r\n\r\n**Expected behavior**\r\nusing `Program.indexWorkspace` would work just as well, if not better, than via the language server.\r\n\r\n**Screenshots or Code**\r\nhttps://github.com/python/mypy/blob/master/mypy/config_parser.py#L107\r\n\r\n```python\r\nini_config_types = {\r\n    'python_version': parse_version,\r\n    'strict_optional_whitelist': lambda s: s.split(),\r\n\t#          Flow type inference failed at ^^^^^\r\n    'custom_typing_module': str,\r\n    'custom_typeshed_dir': expand_path,\r\n    'mypy_path': lambda s: [expand_path(p.strip()) for p in re.split('[,:]', s)],\r\n    'files': split_and_match_files,\r\n    'quickstart_file': expand_path,\r\n    'junit_xml': expand_path,\r\n    # SNIP\r\n\t...\r\n}  # type: Final[Dict[str, _INI_PARSER_CALLABLE]]\r\n```\r\n\r\n**VS Code extension or command-line**\r\nCustom CLI at https://github.com/Strum355/pyright/. Unfortunately the exception is not thrown with 1.1.144 of the vscode pyright extension with the same mypy file.\r\n\r\n**Additional context**\r\n\r\n<details>\r\n<summary>Output from printing expression node </summary>\r\n\r\nConsole.log invoked [here](https://github.com/Strum355/pyright/blob/main/packages/pyright-internal/src/analyzer/typeEvaluator.ts#L16321)\r\n\r\n```js\r\n<ref *2> {\r\n  start: 3594,\r\n  length: 5,\r\n  nodeType: 38,\r\n  id: 16597,\r\n  token: {\r\n    start: 3594,\r\n    length: 5,\r\n    type: 7,\r\n    value: 'split',\r\n    comments: undefined\r\n  },\r\n  value: 'split',\r\n  parent: <ref *1> {\r\n    start: 3592,\r\n    length: 7,\r\n    nodeType: 35,\r\n    id: 16598,\r\n    leftExpression: {\r\n      start: 3592,\r\n      length: 1,\r\n      nodeType: 38,\r\n      id: 16596,\r\n      token: [Object],\r\n      value: 's',\r\n      parent: [Circular *1]\r\n    },\r\n    memberName: [Circular *2],\r\n    parent: {\r\n      start: 3592,\r\n      length: 9,\r\n      nodeType: 9,\r\n      id: 16599,\r\n      leftExpression: [Circular *1],\r\n      arguments: [],\r\n      parent: [Object]\r\n    }\r\n  }\r\n}\r\n```\r\n\r\n</details>\r\n\r\n<details>\r\n<summary>Stacktrace</summary>\r\n\r\n```\r\n/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:16322\r\n        assert(codeFlowExpressions !== undefined);\r\n        ^\r\nError: Debug Failure. False expression.\r\n    at getFlowTypeOfReference (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:16322:9)\r\n    at getTypeFromMemberAccess (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:4252:40)\r\n    at getTypeOfExpressionInternal (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:1008:30)\r\n    at getTypeFromCall (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:6079:32)\r\n    at getTypeOfExpressionInternal (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:1035:34)\r\n    at getTypeFromLambda (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:11016:47)\r\n    at getTypeOfExpressionInternal (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:1201:30)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:10602:39\r\n    at Array.forEach (<anonymous>)\r\n    at getKeyAndValueTypesFromDictionary (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:10574:22)\r\n    at getTypeFromDictionaryExpected (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:10465:9)\r\n    at getTypeFromDictionary (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:10383:28)\r\n    at getTypeOfExpressionInternal (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:1196:30)\r\n    at evaluateTypesForAssignmentStatement (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:12106:39)\r\n    at evaluateTypesForExpressionInContext (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:15764:17)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:940:13\r\n    at evaluateTypeForSubnode (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:16131:13)\r\n    at Object.getType (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:939:16)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluatorWithTracker.ts:62:60\r\n    at TimingStat.timeOperation (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/common/timing.ts:44:28)\r\n    at run (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluatorWithTracker.ts:42:46)\r\n    at Object.getType (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluatorWithTracker.ts:62:25)\r\n    at Function._addResultsForDeclaration (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/languageService/hoverProvider.ts:224:40)\r\n    at Function.getHoverForPosition (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/languageService/hoverProvider.ts:95:22)\r\n    at SourceFile.getHoverForPosition (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/sourceFile.ts:763:30)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:1385:46\r\n    at Object.runWithCancellationToken (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:779:20)\r\n    at Program._runEvaluatorWithCancellationToken (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:1801:41)\r\n    at Program.getHoverForPosition (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:1376:21)\r\n    at TreeVisitor.visitName (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/src/parseTreeVisitor.ts:49:34)\r\n    at TreeVisitor.visitNode (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:377:26)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:96:37)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:105:22\r\n    at Array.forEach (<anonymous>)\r\n    at TreeVisitor.walkMultiple (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:103:15)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:98:18)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:105:22\r\n    at Array.forEach (<anonymous>)\r\n    at TreeVisitor.walkMultiple (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:103:15)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:98:18)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:105:22\r\n    at Array.forEach (<anonymous>)\r\n    at TreeVisitor.walkMultiple (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:103:15)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:98:18)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:105:22\r\n    at Array.forEach (<anonymous>)\r\n    at TreeVisitor.walkMultiple (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:103:15)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:98:18)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:105:22\r\n    at Array.forEach (<anonymous>)\r\n    at TreeVisitor.walkMultiple (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:103:15)\r\n    at TreeVisitor.walk (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/parseTreeWalker.ts:98:18)\r\n    at __webpack_modules__../src/indexer.ts.program.indexWorkspace.isCancellationRequested (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/src/indexer.ts:35:57)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:494:21\r\n    at Object.runWithCancellationToken (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/typeEvaluator.ts:779:20)\r\n    at Program._runEvaluatorWithCancellationToken (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:1801:41)\r\n    at Program.indexWorkspace (/home/noah/Sourcegraph/lsif-pyright/packages/pyright-internal/src/analyzer/program.ts:464:21)\r\n    at Object../src/indexer.ts (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/src/indexer.ts:29:9)\r\n    at __webpack_require__ (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/bootstrap:19:1)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/bootstrap:35:1\r\n    at Function.__webpack_require__.O (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/runtime/chunk loaded:23:1)\r\n    at __webpack_require__.x (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/bootstrap:36:1)\r\n    at Function.__webpack_require__.x (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/runtime/startup chunk dependencies:5:1)\r\n    at /home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/webpack/startup:2:1\r\n    at Object.<anonymous> (/home/noah/Sourcegraph/lsif-pyright/packages/lsif-pyright/dist/lsif-pyright.js:471:12)\r\n    at Module._compile (internal/modules/cjs/loader.js:1068:30)\r\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1097:10)\r\n    at Module.load (internal/modules/cjs/loader.js:933:32)\r\n    at Function.Module._load (internal/modules/cjs/loader.js:774:14)\r\n    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)\r\n    at internal/main/run_main_module.js:17:47\r\n```\r\n\r\n</details>\r\n",
+      "reactions": {
+        "url": "https://api.github.com/repos/microsoft/pyright/issues/1914/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/microsoft/pyright/issues/1914/timeline",
+      "performed_via_github_app": null,
+      "state_reason": "completed",
+      "pinned_comment": null,
+      "score": 1.0
+    },
+    {
+      "url": "https://api.github.com/repos/microsoft/pyright/issues/1087",
+      "repository_url": "https://api.github.com/repos/microsoft/pyright",
+      "labels_url": "https://api.github.com/repos/microsoft/pyright/issues/1087/labels{/name}",
+      "comments_url": "https://api.github.com/repos/microsoft/pyright/issues/1087/comments",
+      "events_url": "https://api.github.com/repos/microsoft/pyright/issues/1087/events",
+      "html_url": "https://github.com/microsoft/pyright/issues/1087",
+      "id": 715708500,
+      "node_id": "MDU6SXNzdWU3MTU3MDg1MDA=",
+      "number": 1087,
+      "title": "Pyright does not show error when mixin's attribute was not initialized",
+      "user": {
+        "login": "oleksandrkryvosheiev",
+        "id": 19464911,
+        "node_id": "MDQ6VXNlcjE5NDY0OTEx",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19464911?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/oleksandrkryvosheiev",
+        "html_url": "https://github.com/oleksandrkryvosheiev",
+        "followers_url": "https://api.github.com/users/oleksandrkryvosheiev/followers",
+        "following_url": "https://api.github.com/users/oleksandrkryvosheiev/following{/other_user}",
+        "gists_url": "https://api.github.com/users/oleksandrkryvosheiev/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/oleksandrkryvosheiev/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/oleksandrkryvosheiev/subscriptions",
+        "organizations_url": "https://api.github.com/users/oleksandrkryvosheiev/orgs",
+        "repos_url": "https://api.github.com/users/oleksandrkryvosheiev/repos",
+        "events_url": "https://api.github.com/users/oleksandrkryvosheiev/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/oleksandrkryvosheiev/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 1591444962,
+          "node_id": "MDU6TGFiZWwxNTkxNDQ0OTYy",
+          "url": "https://api.github.com/repos/microsoft/pyright/labels/as%20designed",
+          "name": "as designed",
+          "color": "13ad96",
+          "default": false,
+          "description": "Not a bug, working as intended"
+        }
+      ],
+      "state": "closed",
+      "locked": false,
+      "assignees": [
+
+      ],
+      "milestone": null,
+      "comments": 4,
+      "created_at": "2020-10-06T14:02:16Z",
+      "updated_at": "2020-10-07T18:41:07Z",
+      "closed_at": "2020-10-07T15:46:58Z",
+      "assignee": null,
+      "author_association": "NONE",
+      "type": null,
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "**Describe the bug**\r\nPyright does not show error when mixin's attribute was not initialized\r\n\r\n**Expected behavior**\r\nPyright should show that initialization of attribute `a_param` missing in object `AB`\r\n\r\n**Screenshots or Code**\r\n```python\r\nclass AMixin:\r\n    a_param: str\r\n\r\n    def a(self):\r\n        return self.a_param\r\n\r\n\r\nclass AB(AMixin):\r\n    def __init__(self, b: str) -> None:\r\n        self.b_param = b\r\n\r\n    def b(self):\r\n        return self.b_param\r\n\r\n\r\nab = AB(\"b\")\r\nab.a() # will throw because `AB` object has no attribute `a_param`\r\n```\r\n\r\n**VS Code extension or command-line**\r\nvscode pylance v2020.9.8",
+      "reactions": {
+        "url": "https://api.github.com/repos/microsoft/pyright/issues/1087/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/microsoft/pyright/issues/1087/timeline",
+      "performed_via_github_app": null,
+      "state_reason": "completed",
+      "pinned_comment": null,
+      "score": 1.0
+    }
+  ],
+  "search_type": "lexical"
+}
