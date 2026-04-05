@@ -18,9 +18,11 @@ This checklist tracks our end-to-end progress across the entire project lifecycl
 - [x] Update entity, configuration manager, and pipeline for ingestion
 - [x] Test the data ingestion component
 
-## 4. Default Model Architecture Preparation ⬜
-- [ ] Download/load VGG16 (or custom CNN) base model
-- [ ] Update entity, configuration manager, and pipeline for base model
+## 4. Default Model Architecture Preparation ✅
+- [x] Download/load VGG16 base model with `include_top=False`
+- [x] Freeze all convolutional layers (Transfer Learning)
+- [x] Add custom Flatten → Dense (Softmax) classification head
+- [x] Save base and updated models to `artifacts/`
 
 ## 5. Model Training ⬜
 - [ ] Define training configuration with MLflow tracking (optional)

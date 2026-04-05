@@ -160,6 +160,26 @@ A. Jupyter Notebooks execute sequentially mapped to memory cell-by-cell. Even if
 
 ---
 
+## 🤖 Prepare Base Model / Transfer Learning
+
+**Q. What is Transfer Learning and why did we use it here instead of training from scratch?**
+
+A. Transfer Learning reuses a model that was already trained on a large dataset (VGG16 was trained on 1.2 million ImageNet images). Instead of teaching a CNN to see from scratch — which would require massive compute time, data, and resources — we borrow the 14 learned convolutional layers that already know how to detect visual features (like edges, textures, shapes). We only train the final 2 classification layers on our small chicken fecal image dataset. This is dramatically faster, uses far less data, and achieves better accuracy than training from scratch.
+
+---
+
+**Q. What does `include_top=False` do in `tf.keras.applications.vgg16.VGG16()`?**
+
+A. VGG16's "top" refers to its final 3 fully-connected (Dense) layers that were originally used to classify 1000 ImageNet categories. By passing `include_top=False`, we surgically remove these layers and only keep the 14 convolutional layers (the feature extractor). We then attach our own custom Dense (2 classes, Softmax) output layer on top.
+
+---
+
+**Q. Why do we freeze VGG16's layers during Transfer Learning?**
+
+A. If we allowed training to update VGG16's pre-trained weights, the gradient updates from our tiny chicken dataset would quickly overwrite and destroy the powerful visual representations learned from 1.2 million ImageNet images. By setting `model.trainable = False`, we freeze those weights permanently. Only the 2 new Dense layers we added train from scratch — drastically reducing overfitting and training time.
+
+---
+
 ## 📦 Data Ingestion
 
 

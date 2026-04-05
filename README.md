@@ -48,6 +48,14 @@ We constructed the automated data ingestion system:
 - Created `ConfigurationManager` to automatically parse YAML files into Python structures using our custom utilities.
 - Built the `DataIngestion` class to programmatically download and extract complex dataset `.zip` structures directly into our isolated `artifacts/` database module.
 
+### ✅ Step 5: Prepare Base Model (Transfer Learning with VGG16)
+We implemented Transfer Learning instead of training a CNN from scratch:
+- Loaded **VGG16** (pre-trained on 1.2M ImageNet images) with `include_top=False` to remove its 1000-class output layer.
+- **Froze all 14 convolutional layers** so their learned feature maps are preserved during fine-tuning.
+- Added a custom **Flatten → Dense (Softmax, 2 classes)** classification head for our binary chicken disease task.
+- Compiled with **SGD optimizer** and **Categorical Cross-Entropy** loss.
+- Saved both the raw base model and the updated custom-headed model into `artifacts/prepare_base_model/`.
+
 ---
 
 ## 🛠️ How to Run the Project (Current State)
