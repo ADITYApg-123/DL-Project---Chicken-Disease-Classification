@@ -56,6 +56,11 @@ We implemented Transfer Learning instead of training a CNN from scratch:
 - Compiled with **SGD optimizer** and **Categorical Cross-Entropy** loss.
 - Saved both the raw base model and the updated custom-headed model into `artifacts/prepare_base_model/`.
 
+### ✅ Step 6: Prepare Training Callbacks
+Built two production-grade training callbacks to monitor and checkpoint the model during training:
+- **TensorBoard**: Automatically logs per-epoch training metrics to a timestamped directory for real-time visualization in the browser.
+- **ModelCheckpoint (`save_best_only=True`)**: Saves the model weights to disk only when validation performance improves — our safety net against overfitting.
+
 ---
 
 ## 🛠️ How to Run the Project (Current State)

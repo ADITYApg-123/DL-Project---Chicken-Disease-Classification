@@ -3,7 +3,6 @@ from cnnClassifier.pipeline.stage_01_data_ingestion import DataIngestionPipeline
 from cnnClassifier.pipeline.stage_02_prepare_base_model import PrepareBaseModelTrainingPipeline
 
 STAGE_NAME = "Data Ingestion Stage"
-
 if __name__ == '__main__':
     try:
         logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
@@ -16,7 +15,6 @@ if __name__ == '__main__':
 
 
 STAGE_NAME = "Prepare Base Model Stage"
-
 if __name__ == '__main__':
     try:
         logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")

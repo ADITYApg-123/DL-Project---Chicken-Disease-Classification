@@ -180,6 +180,26 @@ A. If we allowed training to update VGG16's pre-trained weights, the gradient up
 
 ---
 
+## 🔔 Training Callbacks
+
+**Q. What is a Keras Callback and why do we use them?**
+
+A. Keras Callbacks are hook functions that automatically trigger at specific points during `model.fit()` — after each epoch, after each batch, etc. — without needing to write a manual training loop. They let you monitor training in real-time, save models automatically, and adjust hyperparameters on the fly, all because Keras calls them internally.
+
+---
+
+**Q. What is TensorBoard and how is it used in this project?**
+
+A. TensorBoard is TensorFlow's real-time browser dashboard for visualizing training metrics like accuracy and loss curves during and after training. In this project, a new uniquely timestamped log directory (`tb_logs_at_YYYY-MM-DD-HH-MM-SS`) is created for each training run to prevent old runs from being overwritten. Once training starts, you visualize it live by running: `tensorboard --logdir ./artifacts/prepare_callbacks/tensorboard_log_dir`
+
+---
+
+**Q. Why do we use `save_best_only=True` in our ModelCheckpoint callback?**
+
+A. Without `save_best_only=True`, Keras would overwrite the saved `.h5` model file after every epoch, even if the model's performance got worse. With `save_best_only=True`, the file is only overwritten when the validation accuracy improves upon the previous best — meaning the saved model always represents the peak performance across all training epochs.
+
+---
+
 ## 📦 Data Ingestion
 
 
